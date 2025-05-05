@@ -9,13 +9,9 @@ const Header = () => {
         <div className="flex items-center">
           <div className="mr-2">
             <img 
-              src="/alcaldia-logo.png" 
+              src="/lovable-uploads/a6a68692-2be2-4294-a75a-679d925a539f.png" 
               alt="Logo Alcaldía de Santiago de Cali" 
-              className="h-14 md:h-16"
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = "https://placeholder.pics/svg/200x80/DEDEDE/555555/Alcaldía%20de%20Cali";
-              }}
+              className="h-16 md:h-20"
             />
           </div>
         </div>
