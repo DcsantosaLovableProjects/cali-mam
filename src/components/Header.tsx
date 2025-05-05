@@ -9,7 +9,7 @@ const Header = () => {
         <div className="flex items-center">
           <div className="mr-2">
             <img 
-              src="/lovable-uploads/a6a68692-2be2-4294-a75a-679d925a539f.png" 
+              src="/lovable-uploads/41ef0378-43bd-4072-b61d-1906c2b0ddf5.png" 
               alt="Logo Alcaldía de Santiago de Cali" 
               className="h-16 md:h-20"
             />
