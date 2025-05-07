@@ -4,12 +4,15 @@ import BusinessCard from './BusinessCard';
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Business, sampleBusinesses } from '../services/excelService';
+import { fetchBusinessesFromGoogleSheets } from '../services/googleSheetsService';
 import ExcelUploader from './ExcelUploader';
 import CategoryFilter from './CategoryFilter';
+import { useToast } from "@/hooks/use-toast";
 
 const BusinessCarousel = () => {
   // Estado para los negocios
   const [businesses, setBusinesses] = useState<Business[]>(sampleBusinesses);
+  const [loading, setLoading] = useState<boolean>(false);
   
   // Estado para el filtro de categorías
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -19,6 +22,7 @@ const BusinessCarousel = () => {
   const maxVisibleItems = 3;
   const carouselRef = useRef<HTMLDivElement>(null);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0);
+  const { toast } = useToast();
 
   // Extraer categorías únicas de los negocios
   const categories = [...new Set(businesses.map(business => business.category))];
@@ -27,6 +31,34 @@ const BusinessCarousel = () => {
   const filteredBusinesses = selectedCategory 
     ? businesses.filter(business => business.category === selectedCategory)
     : businesses;
+
+  // Cargar datos desde Google Sheets al montar el componente
+  useEffect(() => {
+    const loadBusinessesFromGoogleSheets = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchBusinessesFromGoogleSheets();
+        if (data && data.length > 0) {
+          setBusinesses(data);
+          toast({
+            title: "Datos cargados",
+            description: `${data.length} negocios cargados desde Google Sheets`,
+          });
+        }
+      } catch (error) {
+        console.error('Error al cargar datos:', error);
+        toast({
+          title: "Error",
+          description: "No se pudieron cargar los datos desde Google Sheets",
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBusinessesFromGoogleSheets();
+  }, [toast]);
 
   // Actualizamos windowWidth cuando cambia el tamaño de la ventana
   useEffect(() => {
@@ -109,8 +141,15 @@ const BusinessCarousel = () => {
           </p>
         </div>
         
-        {/* Cargador de Excel */}
+        {/* Cargador de Excel (mantenerlo como opción alternativa) */}
         <ExcelUploader onDataLoaded={handleDataLoaded} />
+        
+        {/* Estado de carga */}
+        {loading && (
+          <div className="text-center py-4">
+            <p className="text-cali-pink-dark">Cargando datos de negocios...</p>
+          </div>
+        )}
         
         {/* Filtro de categorías */}
         {businesses.length > 0 && (
