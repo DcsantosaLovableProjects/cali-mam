@@ -25,12 +25,6 @@ const Hero = () => {
             >
               Descubrir Negocios
             </a>
-            <a 
-              href="#contacto" 
-              className="bg-transparent border-2 border-cali-gold text-gray-800 font-medium py-3 px-8 rounded-full hover:bg-cali-gold hover:text-white transition-colors duration-300 shadow-md"
-            >
-              Cómo Participar
-            </a>
           </div>
         </div>
       </div>
