@@ -25,28 +25,50 @@ export const fetchBusinessesFromGoogleSheets = async (): Promise<Business[]> => 
     
     // Mapear cada fila a un objeto Business
     data.table.rows.forEach((row: any, index: number) => {
+      // Saltarse la primera fila si es el encabezado
+      if (index === 0) return;
+      
       const businessData: any = {};
       
       // Asignar valores basados en las columnas
       row.c.forEach((cell: any, cellIndex: number) => {
-        const columnName = columns[cellIndex];
-        if (columnName && cell) {
-          businessData[columnName] = cell.v || '';
+        if (cell && cell.v !== null && cell.v !== undefined) {
+          // Usar los índices directamente ya que las etiquetas pueden estar vacías
+          switch(cellIndex) {
+            case 0: // Categoría
+              businessData.category = cell.v;
+              break;
+            case 1: // Nombre
+              businessData.name = cell.v;
+              break;
+            case 2: // Descripción
+              businessData.description = cell.v;
+              break;
+            case 3: // Foto
+              businessData.imageUrl = cell.v;
+              break;
+            case 4: // Enlace
+              businessData.catalogUrl = cell.v;
+              break;
+          }
         }
       });
       
-      // Crear objeto Business con mapeo de campos
-      businesses.push({
-        id: index + 1,
-        name: businessData.nombre || businessData.name || '',
-        description: businessData.descripcion || businessData.description || '',
-        category: businessData.categoria || businessData.category || '',
-        imageUrl: businessData.imagen || businessData.imageurl || 
-                 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-        catalogUrl: businessData.catalogo || businessData.catalogurl || '#'
-      });
+      // Solo agregar negocios que tengan al menos nombre
+      if (businessData.name) {
+        businesses.push({
+          id: index,
+          name: businessData.name || '',
+          description: businessData.description || '',
+          category: businessData.category || '',
+          imageUrl: businessData.imageUrl || 
+                   'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+          catalogUrl: businessData.catalogUrl || '#'
+        });
+      }
     });
     
+    console.log("Datos cargados:", businesses);
     return businesses;
   } catch (error) {
     console.error('Error al obtener datos de Google Sheets:', error);

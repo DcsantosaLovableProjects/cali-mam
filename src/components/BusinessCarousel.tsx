@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Business, sampleBusinesses } from '../services/excelService';
 import { fetchBusinessesFromGoogleSheets } from '../services/googleSheetsService';
-import ExcelUploader from './ExcelUploader';
 import CategoryFilter from './CategoryFilter';
 import { useToast } from "@/hooks/use-toast";
 
@@ -125,11 +124,6 @@ const BusinessCarousel = () => {
     visibleBusinesses.push(...filteredBusinesses.slice(0, visibleItems - visibleBusinesses.length));
   }
 
-  const handleDataLoaded = (newBusinesses: Business[]) => {
-    setBusinesses(newBusinesses);
-    setSelectedCategory(null);
-  };
-
   return (
     <section id="negocios" className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -140,9 +134,6 @@ const BusinessCarousel = () => {
             Apóyalos y regala algo único, hecho con amor en nuestra ciudad.
           </p>
         </div>
-        
-        {/* Cargador de Excel (mantenerlo como opción alternativa) */}
-        <ExcelUploader onDataLoaded={handleDataLoaded} />
         
         {/* Estado de carga */}
         {loading && (
