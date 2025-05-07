@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ShoppingCart } from 'lucide-react';
+import { Building2 } from 'lucide-react';
 
 interface BusinessCardProps {
   name: string;
@@ -45,8 +45,8 @@ const BusinessCard = ({
           asChild
         >
           <a href={catalogUrl} target="_blank" rel="noopener noreferrer">
-            <ShoppingCart className="w-4 h-4 mr-2" />
-            Ver catálogo
+            <Building2 className="w-4 h-4 mr-2" />
+            Ver empresa
           </a>
         </Button>
       </CardFooter>
